@@ -1,0 +1,21 @@
+{
+  "name": "cacheio",
+  "preferGlobal": "true",
+  "description": "Cache library for in-memory caching of data coming from backends",
+  "version": "0.5.1",
+  "author": "Gidi Bloch",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/codebutcher/node.cacheio.git"
+  },
+  "keywords": [
+    "cache",
+	"lib",
+    "data store",
+    "io"
+  ],
+  "main": "./cacheio",
+  "engines": {
+    "node": ">= 0.4.0"
+  }
+}
