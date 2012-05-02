@@ -61,12 +61,15 @@ var cacheStore = function(options){
 		this.cache[eid] = {ret : 'missing'
 			,atime : new Date().getTime()};
 	}
-	
+
+	this.isExpired = function (cacheEntry) {
+		return (now - cacheEntry.atime > this.options.cacheTTL * 1000);
+	}
 	
 	this.cacheCleanup = function(){
 		var now = new Date().getTime();
 		for(var eid in this.cache){
-			if(now - this.cache[eid].atime > this.options.cacheTTL * 1000){
+			if(isExpired(this.cache[eid])){
 				delete(this.cache[eid]);
 			}
 		}
