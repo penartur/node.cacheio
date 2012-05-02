@@ -83,7 +83,7 @@ var cacheStore = function(options){
 	this.cacheCleanup = function(){
 		var now = new Date().getTime();
 		for(var eid in this.cache){
-			if(isExpired(this.cache[eid])){
+			if(this.isExpired(this.cache[eid])){
 				delete(this.cache[eid]);
 			}
 		}
