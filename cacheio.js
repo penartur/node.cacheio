@@ -63,7 +63,15 @@ var cacheStore = function(options){
 	}
 
 	this.isExpired = function (cacheEntry) {
-		return (now - cacheEntry.atime > this.options.cacheTTL * 1000);
+		var now = new Date().getTime();
+		switch(cacheEntry.ret){
+			case 'found':
+				if(now - cacheEntry.atime > this.options.cacheTTL * 1000) return true;
+				return false;
+			case 'missing':
+				if (now - cacheEntry.atime > this.options.negativeTTL * 1000) return true;
+				return false;
+		}
 	}
 	
 	this.cacheCleanup = function(){
