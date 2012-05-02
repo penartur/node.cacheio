@@ -35,6 +35,8 @@ var cacheStore = function(options){
 	this.options = {}
 	this.options.cacheTTL = 600;// seconds
 	this.options.negativeTTL = 100;// seconds
+	this.options.cacheExpires = 6000;// seconds
+	this.options.negativeExpires = 1000;// seconds
 	this.options.gcFreq = 160;// seconds
 	for(var opt in options){
 		this.options[opt] = options[opt];
@@ -55,10 +57,12 @@ var cacheStore = function(options){
 		data.eid = eid;
 		this.cache[eid] = {data: data 
 			,ret : 'found'
+			,mtime: new Date().getTime()
 			,atime : new Date().getTime()};
 	}
 	this.setNegativeCache = function(eid){
 		this.cache[eid] = {ret : 'missing'
+			,mtime : new Date().getTime()
 			,atime : new Date().getTime()};
 	}
 
@@ -66,9 +70,11 @@ var cacheStore = function(options){
 		var now = new Date().getTime();
 		switch(cacheEntry.ret){
 			case 'found':
+				if(now - cacheEntry.mtime > this.options.cacheExpires * 1000) return true;
 				if(now - cacheEntry.atime > this.options.cacheTTL * 1000) return true;
 				return false;
 			case 'missing':
+				if(now - cacheEntry.mtime > this.options.negativeExpires * 1000) return true;
 				if (now - cacheEntry.atime > this.options.negativeTTL * 1000) return true;
 				return false;
 		}
