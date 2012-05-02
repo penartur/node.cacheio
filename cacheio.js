@@ -93,7 +93,7 @@ var cacheStore = function(options){
 		// cache entry is false
 		switch(this.cache[eid].ret){
 			case 'found':
-				if(new Date().getTime() - this.cache[eid].atime < this.options.cacheTTL * 1000){
+				if(!this.isExpired(this.cache[eid])){
 					// we've got the entry , update atime and return cached entry'
 					this.cache[eid].atime = new Date().getTime();
 					return this.cache[eid].data;				
@@ -105,7 +105,7 @@ var cacheStore = function(options){
 			// cache entry doesnt exists
 			case 'missing':
 				// check negative ttl
-				if(new Date().getTime() - this.cache[eid].atime < this.options.negativeTTL * 1000){
+				if(!this.isExpired(this.cache[eid])){
 					return 'missing';
 
 				} else {
