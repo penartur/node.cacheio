@@ -54,6 +54,9 @@ var cacheStore = function(options){
 	}
 	
 	this.setCache = function(eid, data){
+		if(typeof data != "object"){
+			throw new Error("Cache accepts only objects as its values; got " + (typeof data));
+		}
 		data.eid = eid;
 		this.cache[eid] = {data: data 
 			,ret : 'found'
@@ -131,9 +134,10 @@ var cacheStore = function(options){
 					this.entryGet(eid, cb);
 					break;
 				case 'missing':
-					
 					cb.apply(this, [ 'session unfound' ]);
 					break;
+				default:
+					throw new Error("Wrong cache entry: " + entry);
 			}
 		}
 	}
